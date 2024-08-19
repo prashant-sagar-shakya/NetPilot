@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="results-container">
+    <h2>Analysis Results</h2>
+    <div class="table-container">
+        {{ table|safe }}
+    </div>
+    <div class="graph-container">
+        <img src="data:image/png;base64,{{ img }}" alt="Packet Length Distribution">
+    </div>
+    <a href="{{ url_for('index') }}" class="back-button">Back to Home</a>
+</div>
+{% endblock %}
