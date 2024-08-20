@@ -2,6 +2,8 @@
 
 This project is a Flask-based web application that captures and analyzes network traffic. It supports real-time packet capture and pcap file uploads for traffic analysis. The application uses libraries like Scapy, Pandas, Matplotlib, and Tabulate for packet sniffing, data processing, and generating visual insights.
 
+![Thumbnail](/img.png)
+
 ## Features
 
 - **Real-Time Packet Capture:** Capture live network packets and analyze them directly in the browser.
