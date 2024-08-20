@@ -16,8 +16,8 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
-def capture_packets(packet_count=10):
-    packets = sniff(count=packet_count)
+def capture_packets(packets):
+    packets = sniff(count=packets)
     return packets
 def analyze_packets(packets):
     data = []
@@ -54,16 +54,13 @@ def index():
 @app.route('/analyze', methods=['GET', 'POST'])
 def analyze():
     if request.method == 'POST':
-        if 'file' in request.files:
+        if 'file' in request.files and request.files['file'].filename != '':
             file = request.files['file']
-            if file.filename == '':
-                return redirect(request.url)
-
-            if file and allowed_file(file.filename):
+            if allowed_file(file.filename):
                 filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
                 file.save(filepath)
 
-                # Read the PCAP file
+                # Read and analyze the uploaded PCAP file
                 packets = rdpcap(filepath)
                 df = analyze_packets(packets)
                 table, img = generate_visuals(df)
