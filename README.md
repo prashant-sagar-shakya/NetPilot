@@ -22,7 +22,7 @@ This project is a Flask-based web application that captures and analyzes network
 1. Clone the repository:
     ```bash
     git clone https://github.com/prashant-sagar-shakya/NetPilot.git
-    cd your-repo-name
+    cd NetPilot
     ```
 
 2. Create a virtual environment and activate it:
