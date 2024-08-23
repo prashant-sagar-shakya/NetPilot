@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 from scapy.all import sniff, rdpcap
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -16,9 +16,11 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
-def capture_packets(packets):
-    packets = sniff(count=packets)
+
+def capture_packets(packet_count):
+    packets = sniff(count=packet_count)
     return packets
+
 def analyze_packets(packets):
     data = []
     for pkt in packets:
@@ -29,6 +31,7 @@ def analyze_packets(packets):
             length = len(pkt)
             data.append([src, dst, proto, length])
     return pd.DataFrame(data, columns=["Source", "Destination", "Protocol", "Length"])
+
 def generate_visuals(df):
     table = tabulate(df, headers='keys', tablefmt='html')
 
@@ -67,7 +70,8 @@ def analyze():
 
                 return render_template('results.html', table=table, img=img)
 
-        packet_count = int(request.form.get('packet_count', 10))
+        packet_count = int(request.form.get('packet_count', 10))  # Default to 10 if not provided
+        print(packet_count)
         packets = capture_packets(packet_count)
         df = analyze_packets(packets)
         table, img = generate_visuals(df)
